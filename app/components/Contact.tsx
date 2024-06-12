@@ -78,7 +78,7 @@ function Contact(): JSX.Element {
     e.preventDefault();
     const re =
       /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if (!re.test(formData.email)) {
+    if (!formData["email"].match(re)) {
       setColor("warning");
       setInfo({
         heading: "Warning",
