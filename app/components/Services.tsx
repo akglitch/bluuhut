@@ -1,63 +1,70 @@
 import React from "react";
+import Reveal from "./Reveal";
+import SectionHeading from "./SectionHeading";
 import { serviceData } from "../utils/data";
 
 export default function Services() {
   return (
-    <div id="services">
-      <section className="container px-6 py-6 mx-auto max-w-screen-xl">
+    <section
+      id="services"
+      className="mesh relative overflow-hidden border-b border-line py-20 sm:py-28"
+    >
+      <div
+        className="orb orb-accent right-[-12rem] top-10 h-[30rem] w-[30rem] opacity-40"
+        aria-hidden
+      />
+      <div className="relative mx-auto max-w-screen-xl px-6">
+        <SectionHeading
+          index="01 / 04"
+          eyebrow="Capabilities"
+          title={
+            <>
+              Three disciplines, one{" "}
+              <span className="text-accent-bright">accountable team.</span>
+            </>
+          }
+          description="From power to networks to facility care, the full lifecycle of the systems that keep you running."
+        />
 
-        <h1 className="text-3xl font-semibold  capitalize lg:text-3xl">
-          explore our <br></br> awesome <span className="text-primary">Services</span>
-
-        </h1>
-
-        <p className="mt-4 xl:mt-6 ">
-          Discover our line of cutting-edge, eco-conscious products and services
-          that combine innovation and environmental responsibility. From
-          solar-powered solutions to biodegradable materials, each of our
-          offerings reflects our dedication to reducing our carbon footprint
-          while delivering exceptional performance.
-        </p>
-
-        <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-3">
           {serviceData.map((service, index) => (
-            <div
-              key={index}
-              className="p-8 space-y-3 border-2 border-gray-700  rounded-xl"
+            <Reveal
+              key={service.title}
+              delay={index * 0.08}
+              className="glass group flex flex-col rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1"
             >
-              <span className="inline-block text-secondary dark:text-secondary">
-                {service.icon}
-              </span>
+              <div className="flex items-center justify-between">
+                <span className="index-num text-sm font-semibold text-muted">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-soft text-accent-bright transition-colors group-hover:bg-accent group-hover:text-white">
+                  {service.icon}
+                </span>
+              </div>
 
-              <h1 className="text-2xl font-semibold  capitalize text-primary">
+              <h3 className="mt-6 display text-2xl font-semibold text-ink">
                 {service.title}
-              </h1>
+              </h3>
 
-              <p className=" ">{service.description}</p>
+              <p className="mt-3 text-sm leading-relaxed text-soft">
+                {service.description}
+              </p>
 
-              <a
-                href="#"
-                className="inline-flex p-2 text-white capitalize transition-colors duration-200 transform bg-secondary rounded-full dark:bg-secondary dark:text-white hover:underline  "
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </a>
-            </div>
+              <ul className="mt-6 space-y-2.5 border-t border-line pt-6">
+                {service.capabilities.map((cap) => (
+                  <li
+                    key={cap}
+                    className="flex items-start gap-3 text-sm text-ink-soft"
+                  >
+                    <span className="mt-1.5 h-1.5 w-1.5 flex-none rounded-full bg-accent" aria-hidden />
+                    {cap}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
           ))}
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

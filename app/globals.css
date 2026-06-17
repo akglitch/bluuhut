@@ -1,33 +1,405 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------ */
+/*  BlueHut Solutions — Dark Engineering Design System                  */
+/*  Photo-forward, near-black surfaces, cobalt accent, grotesque        */
+/*  display type with a monospace data layer.                          */
+/* ------------------------------------------------------------------ */
+
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --font-inter: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --paper: 244 246 248; /* #F4F6F8 — cool light canvas */
+  --surface: 255 255 255; /* #FFFFFF — elevated cards / panels */
+  --sand: 236 239 243; /* #ECEFF3 — alternating band */
+  --ink: 11 22 32; /* #0B1620 — cool near-black text */
+  --ink-soft: 52 67 78; /* #34434E — secondary text */
+  --muted: 100 116 139; /* #64748B — slate captions / labels */
+  --line: 11 22 32; /* used with low alpha for hairlines on light */
+  --accent: 5 150 105; /* #059669 — emerald (legible on light) */
+  --accent-ink: 4 120 87; /* #047857 — accent hover/active */
+  --accent-bright: 5 150 105; /* #059669 — emphasis on light */
+
+  /* Elevation tokens — restrained, cool-tinted shadows */
+  --shadow-sm: 0 1px 2px rgba(11, 22, 32, 0.05),
+    0 1px 3px rgba(11, 22, 32, 0.04);
+  --shadow-md: 0 2px 8px rgba(11, 22, 32, 0.06),
+    0 8px 24px rgba(11, 22, 32, 0.05);
+  --shadow-lg: 0 8px 24px rgba(11, 22, 32, 0.08),
+    0 24px 56px rgba(11, 22, 32, 0.08);
+  --shadow-accent: 0 12px 36px rgba(5, 150, 105, 0.28);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6.5rem;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  /* color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb)); */
+  background-color: rgb(var(--paper));
+  color: rgb(var(--ink));
+  overflow-x: hidden;
+  font-feature-settings: "kern", "liga", "calt";
+}
+
+::selection {
+  background: rgba(var(--accent), 0.28);
+  color: rgb(var(--ink));
+}
+
+/* Restrained scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: rgb(var(--paper));
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--line), 0.18);
+  border-radius: 0;
+  border: 4px solid rgb(var(--paper));
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--line), 0.32);
+}
+
+@layer base {
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  /* Display headline — tight, heavily-set grotesque. The engineered
+     voice of the site. */
+  .display {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+
+  /* Oversized editorial display headline used in the hero — uppercase,
+     ultra-tight, with an italic emphasis variant. */
+  .display-xl {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+  }
+  .display-xl em {
+    font-style: italic;
+    font-weight: 600;
+    color: rgb(var(--accent-bright));
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Secondary / muted ink */
+  .text-soft {
+    color: rgb(var(--ink-soft));
+  }
+  .text-muted {
+    color: rgb(var(--muted));
+  }
+
+  /* Hairline helpers driven by white at low alpha (dark surfaces) */
+  .border-line {
+    border-color: rgba(var(--line), 0.14);
+  }
+  .border-line-strong {
+    border-color: rgba(var(--line), 0.28);
+  }
+  .divide-line > * + * {
+    border-color: rgba(var(--line), 0.14);
+  }
+  .bg-hairline {
+    background-color: rgba(var(--line), 0.14);
+  }
+
+  /* Monospace tracked label — the technical "eyebrow". */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgb(var(--accent-bright));
+  }
+
+  /* Monospace section index, e.g. "01 / 06" — instrument readout */
+  .index-num {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+    letter-spacing: 0.02em;
+  }
+
+  /* Generic monospace data/label helper */
+  .mono {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-feature-settings: "tnum";
+  }
+
+  /* Accent rule used under eyebrows / above headings */
+  .rule-accent {
+    width: 2.5rem;
+    height: 2px;
+    background: rgb(var(--accent-bright));
+  }
+
+  /* Engineering crosshair tick — small plus mark for card corners */
+  .tick {
+    position: relative;
+  }
+  .tick::before,
+  .tick::after {
+    content: "";
+    position: absolute;
+    background: rgba(var(--line), 0.25);
+  }
+  .tick::before {
+    top: 0.75rem;
+    left: 0.55rem;
+    width: 9px;
+    height: 1px;
+  }
+  .tick::after {
+    top: 0.3rem;
+    left: 0.9rem;
+    width: 1px;
+    height: 9px;
+  }
+
+  /* Elevation utilities */
+  .shadow-soft {
+    box-shadow: var(--shadow-sm);
+  }
+  .shadow-card {
+    box-shadow: var(--shadow-md);
+  }
+  .shadow-float {
+    box-shadow: var(--shadow-lg);
+  }
+  .shadow-accent {
+    box-shadow: var(--shadow-accent);
+  }
+
+  /* ---- Glassmorphism layer (light) ---------------------------------- */
+  /* Frosted light glass — translucent panels over imagery / glows. */
+  .glass {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  }
+  /* Stronger frost for panels that need more legibility */
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+  /* Deep glass for use over bright imagery (hero info card) */
+  .glass-dark {
+    background: rgba(11, 22, 32, 0.42);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: var(--shadow-md);
+  }
+  /* Glass nav pill */
+  .glass-nav {
+    background: rgba(244, 246, 248, 0.7);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+  }
+
+  /* Blurred colored glow orb — drop behind glass for depth & color */
+  .orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(72px);
+    pointer-events: none;
+    opacity: 0.5;
+    z-index: 0;
+  }
+  .orb-accent {
+    background: radial-gradient(
+      circle at center,
+      rgba(var(--accent-bright), 0.7),
+      transparent 70%
+    );
+  }
+  .orb-ink {
+    background: radial-gradient(
+      circle at center,
+      rgba(var(--accent), 0.55),
+      transparent 70%
+    );
+  }
+
+  /* Soft gradient mesh background — gives glass something to refract */
+  .mesh {
+    background-color: rgb(var(--paper));
+    background-image: radial-gradient(
+        42rem 42rem at 12% -10%,
+        rgba(var(--accent), 0.14),
+        transparent 60%
+      ),
+      radial-gradient(
+        36rem 36rem at 100% 0%,
+        rgba(var(--accent-bright), 0.1),
+        transparent 55%
+      ),
+      radial-gradient(
+        40rem 40rem at 80% 110%,
+        rgba(var(--accent), 0.1),
+        transparent 60%
+      );
+  }
+
+  /* Image-overlay helper: dark scrim for text legibility over photos */
+  .img-scrim::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(9, 13, 18, 0.45),
+      rgba(9, 13, 18, 0.85)
+    );
+  }
+
+  /* Gradient + glow accents */
+  .text-gradient-accent {
+    background: linear-gradient(
+      100deg,
+      rgb(var(--accent-bright)),
+      rgb(var(--accent))
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .bg-accent-soft {
+    background: rgba(var(--accent), 0.14);
+  }
+  .border-accent-soft {
+    border-color: rgba(var(--accent), 0.32);
+  }
+
+  /* Cobalt glow used behind the hero + feature panels */
+  .glow-accent {
+    position: relative;
+  }
+  .glow-accent::before {
+    content: "";
+    position: absolute;
+    inset: -20% 10% auto auto;
+    width: 38rem;
+    height: 38rem;
+    background: radial-gradient(
+      circle at center,
+      rgba(var(--accent-bright), 0.4),
+      transparent 62%
+    );
+    filter: blur(20px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Editorial underlined inline link */
+  .link-underline {
+    background-image: linear-gradient(
+      rgb(var(--accent-bright)),
+      rgb(var(--accent-bright))
+    );
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-underline:hover {
+    background-size: 0% 1px;
+  }
+
+  /* Subtle hover lift for interactive cards */
+  .lift {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
+  }
+  .lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Engineering blueprint grid (white hairlines on dark) */
+  .blueprint {
+    background-image: linear-gradient(rgba(var(--line), 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(var(--line), 0.05) 1px, transparent 1px);
+    background-size: 38px 38px;
+  }
+  .blueprint-dark {
+    background-image: linear-gradient(rgba(var(--line), 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(var(--line), 0.05) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+}
+
+/* Marquee for partner/sector logos */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee {
+    animation: none;
   }
 }

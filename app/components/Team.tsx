@@ -1,97 +1,88 @@
 import React from "react";
+import Reveal from "./Reveal";
+import SectionHeading from "./SectionHeading";
 
-interface TeamMemberProps {
-  member: {
-    name: string;
-    role: string;
-    description: string;
-    image: string;
-  };
+interface Member {
+  name: string;
+  role: string;
+  description: string;
 }
 
-const teamMembers = [
+const teamMembers: Member[] = [
   {
     name: "Raphael Kwadwo Aninakwa",
-    role: "Managing Director (MD)",
+    role: "Managing Director",
     description:
-      "Raphael Kwadwo Aninakwa is the dynamic leader at the helm of our company`s` journey. With over seven years of invaluable experience in [industry/field], he brings a wealth of knowledge and a visionary outlook to our team. Raphael is dedicated to propelling our company forward with innovation, strategic direction, and a steadfast commitment to excellence.",
-    image:
-      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+      "A decade across electrical and telecom engineering, setting the standard for technical rigour and safety.",
   },
   {
-    name: "kaytee",
-    role: "Chief Operations Officer (COO)",
+    name: "Kwaku Ntiri",
+    role: "Chief Operations Officer",
     description:
-      "Kaytee, our COO, brings nine years of invaluable experience to our executive team. As a male leader, he is instrumental in optimizing our operational processes to maximize efficiency and productivity. With a track record of streamlining workflows and implementing strategic initiatives, Kaytee plays a crucial role in driving the day-to-day operations of our firm.",
-    image:
-      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
+      "Nine years in operations, keeping every project on scope, on budget, and on time.",
   },
-  // Add more team members as needed
 ];
 
-function TeamMember({ member }: TeamMemberProps) {
+function monogram(name: string) {
+  return name
+    .split(" ")
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
+
+function TeamMember({ member, index }: { member: Member; index: number }) {
   return (
-    <div className="max-w-screen-xl px-12 py-8 transition-colors duration-300 transform border cursor-pointer rounded-xl hover:border-transparent group hover:bg-primary dark:border-gray-700 dark:hover:border-transparent">
-      <div className="flex flex-col sm:-mx-4 sm:flex-row">
-        <img
-          className="flex-shrink-0 object-cover w-24 h-24 rounded-full sm:mx-4 ring-4 ring-gray-300"
-          src={member.image}
-          alt={member.name}
-        />
-
-        <div className="mt-4 sm:mx-4 sm:mt-0">
-          <h1 className="text-xl font-semibold text-gray-700 capitalize md:text-2xl dark:text-white group-hover:text-white">
+    <Reveal
+      delay={index * 0.08}
+      className="glass group flex flex-col rounded-2xl p-8 transition-transform duration-300 hover:-translate-y-1"
+    >
+      <div className="flex items-center gap-5">
+        <span className="mono flex h-16 w-16 flex-none items-center justify-center rounded-xl bg-accent text-lg font-medium tracking-wide text-white">
+          {monogram(member.name)}
+        </span>
+        <div>
+          <h3 className="display text-xl font-semibold text-ink">
             {member.name}
-          </h1>
-
-          <p className="mt-2  capitalize  group-hover:text-gray-300">
+          </h3>
+          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-accent-bright">
             {member.role}
           </p>
         </div>
       </div>
-
-      <p className="mt-4  capitalize  group-hover:text-gray-300">
+      <p className="mt-6 text-sm leading-relaxed text-soft">
         {member.description}
       </p>
-
-      <div className="flex mt-4 -mx-2">{/* Add social media links here */}</div>
-    </div>
+    </Reveal>
   );
 }
 
-function Team() {
+export default function Team() {
   return (
-    <div id="team">
-      <div className="">
-        <div className="container max-w-screen-xl px-6 py-10 mx-auto">
+    <section
+      id="team"
+      className="mesh relative overflow-hidden border-b border-line py-20 sm:py-28"
+    >
+      <div className="orb orb-ink left-[-10rem] bottom-[-4rem] h-[26rem] w-[26rem] opacity-35" aria-hidden />
+      <div className="relative mx-auto max-w-screen-xl px-6">
+        <SectionHeading
+          eyebrow="Leadership"
+          title={
+            <>
+              The people{" "}
+              <span className="text-accent-bright">accountable for the work.</span>
+            </>
+          }
+          description="A hands-on team that stays close to every engagement."
+        />
 
-        <div className="flex mt-8 mb-8 items-center justify-center p-10 mx-1 md:mx-10 h-96">
-            <blockquote className="relative text-center p-10 w-full m-1 bg-gradient-to-r from-primary to-transparent via-transparent">
-                <span className="absolute top-0 left-0 -ml-8 mt-1 text-primary text-6xl">&ldquo;</span>
-                If people knew how hard I had to work to gain my mastery, it would not seem so wonderful at all. 
-                <cite> - Michelangelo Buonarroti</cite>
-                <span className="absolute bottom-0 right-0 -mr-8 mb-1 text-primary text-6xl">&rdquo;</span>
-
-            </blockquote>
-          </div>
-          <h1 className="text-3xl font-semibold   capitalize lg:text-3xl ">
-            Our <span className="text-primary">Executive Team</span>
-          </h1>
-
-          <p className="mt-4  xl:mt-6 ">
-            Meet Our Executive Team: Passionate leaders dedicated to driving our
-            vision forward with expertise and innovation.
-          </p>
-
-          <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 xl:grid-cols-2">
-            {teamMembers.map((member, index) => (
-              <TeamMember key={index} member={member} />
-            ))}
-          </div>
+        <div className="mt-14 grid grid-cols-1 gap-5 md:grid-cols-2">
+          {teamMembers.map((member, index) => (
+            <TeamMember key={member.name} member={member} index={index} />
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
-
-export default Team;

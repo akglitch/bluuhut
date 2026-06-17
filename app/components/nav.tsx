@@ -1,140 +1,150 @@
+"use client";
 import React from "react";
+import { usePathname } from "next/navigation";
 import {
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
   Link,
-  Button,
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Switch,
 } from "@nextui-org/react";
-import { useColorMode } from "../utils/theme";
 
-export default function App() {
+const menuItems: { label: string; href: string }[] = [
+  { label: "About", href: "/about" },
+  { label: "Capabilities", href: "/#services" },
+  { label: "Industries", href: "/#industries" },
+  { label: "Process", href: "/#process" },
+  { label: "Pricing", href: "/pricing" },
+];
+
+function isActive(pathname: string, href: string) {
+  if (href.startsWith("/#")) return false;
+  return pathname === href;
+}
+
+function Wordmark() {
+  return (
+    <Link href="/" className="flex items-center" aria-label="BlueHut Solutions — home">
+      <span className="flex items-center gap-2.5">
+        <span className="flex flex-col leading-none">
+          <span className="display text-[1.1rem] font-semibold tracking-tight text-ink">
+            BlueHut
+          </span>
+          <span className="mono mt-0.5 text-[0.5625rem] font-medium uppercase tracking-[0.22em] text-muted">
+            Solutions
+          </span>
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+export default function MainNav() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [activeLink, setActiveLink] = React.useState(0);
-  const colorMdCtx = useColorMode();
+  const [scrolled, setScrolled] = React.useState(false);
+  const pathname = usePathname();
 
-  type MenuType = {
-    [key: string]: string;
-  };
-  const menuItems: MenuType = {
-    Home: "/#",
-    About: "/#about",
-    Services: "/#services",
-    Pricing: "/#pricing",
-    Contact: "/#contact",
-  };
+  React.useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} isMenuOpen={isMenuOpen}>
-      <NavbarContent>
+    <Navbar
+      onMenuOpenChange={setIsMenuOpen}
+      isMenuOpen={isMenuOpen}
+      maxWidth="xl"
+      height="4rem"
+      isBlurred={false}
+      className="fixed top-0 bg-transparent pt-3 sm:pt-4"
+      classNames={{
+        wrapper: `rounded-full border border-line px-4 transition-all duration-300 sm:px-6 ${
+          scrolled
+            ? "glass-nav shadow-card"
+            : "bg-paper/50 backdrop-blur-md"
+        }`,
+      }}
+    >
+      <NavbarContent justify="start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
+          className="text-ink sm:hidden"
         />
         <NavbarBrand>
-          {/* Logo goes here */}
-          <p className="font-bold text-xl">BlueHut</p>
+          <Wordmark />
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {Object.keys(menuItems).map((item, index) => (
-          <NavbarItem key={`${item}-${index}`}>
-            <Link
-              color={index + 1 === activeLink ? "primary" : "foreground"}
-              className="w-full"
-              href={menuItems[item]}
-              size="lg"
-              onPress={() => setActiveLink(index + 1)}
-            >
-              {item}
-            </Link>
-          </NavbarItem>
-        ))}
+      <NavbarContent className="hidden gap-8 sm:flex" justify="center">
+        {menuItems.map((item) => {
+          const active = isActive(pathname, item.href);
+          return (
+            <NavbarItem key={item.href} isActive={active}>
+              <Link
+                href={item.href}
+                className={`mono text-[0.7rem] font-medium uppercase tracking-[0.1em] transition-colors ${
+                  active
+                    ? "text-accent-bright"
+                    : "text-ink-soft hover:text-ink"
+                }`}
+              >
+                {item.label}
+              </Link>
+            </NavbarItem>
+          );
+        })}
       </NavbarContent>
+
       <NavbarContent justify="end">
-        <NavbarItem>
-          <Button as={Link} color="secondary" href="/#pricing" variant="flat">
-            Get started
-          </Button>
+        <NavbarItem className="hidden lg:flex">
+          <Link
+            href="tel:+14346025401"
+            className="mono text-[0.7rem] font-medium tracking-tight text-ink-soft transition-colors hover:text-ink"
+          >
+            +1 434 602 5401
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <Switch
-            defaultSelected
-            size="sm"
-            color="secondary"
-            thumbIcon={({ isSelected, className }) =>
-              isSelected ? (
-                <SunIcon className={className} />
-              ) : (
-                <MoonIcon className={className} />
-              )
-            }
-            onClick={() => colorMdCtx.colorMode.toggleColorMode()}
-          ></Switch>
+          <Link
+            href="/#contact"
+            className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-accent-ink"
+          >
+            Request a quote
+            <span aria-hidden>→</span>
+          </Link>
         </NavbarItem>
       </NavbarContent>
-      <NavbarMenu className="flex items-center">
-        {Object.keys(menuItems).map((item, index) => (
-          <NavbarMenuItem className="my-3 text-xl" key={`${item}-${index}`}>
+
+      <NavbarMenu className="bg-paper/95 pt-10 backdrop-blur-xl">
+        {menuItems.map((item) => (
+          <NavbarMenuItem key={item.href} className="border-b border-line py-1">
             <Link
-              color={index + 1 === activeLink ? "primary" : "foreground"}
-              className="w-full"
-              href={menuItems[item]}
+              href={item.href}
               size="lg"
-              onClick={() => {
-                setActiveLink(index + 1);
-                setIsMenuOpen(false);
-              }}
+              className={`w-full py-3 display text-2xl ${
+                isActive(pathname, item.href) ? "text-accent-bright" : "text-ink"
+              }`}
+              onPress={() => setIsMenuOpen(false)}
             >
-              {item}
+              {item.label}
             </Link>
           </NavbarMenuItem>
         ))}
+        <NavbarMenuItem className="mt-6">
+          <Link
+            href="/#contact"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-5 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-white"
+            onPress={() => setIsMenuOpen(false)}
+          >
+            Request a quote <span aria-hidden>→</span>
+          </Link>
+        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
-  );
-}
-
-function MoonIcon(props: any) {
-  return (
-    <svg
-      aria-hidden="true"
-      focusable="false"
-      height="1em"
-      role="presentation"
-      viewBox="0 0 24 24"
-      width="1em"
-      {...props}
-    >
-      <path
-        d="M21.53 15.93c-.16-.27-.61-.69-1.73-.49a8.46 8.46 0 01-1.88.13 8.409 8.409 0 01-5.91-2.82 8.068 8.068 0 01-1.44-8.66c.44-1.01.13-1.54-.09-1.76s-.77-.55-1.83-.11a10.318 10.318 0 00-6.32 10.21 10.475 10.475 0 007.04 8.99 10 10 0 002.89.55c.16.01.32.02.48.02a10.5 10.5 0 008.47-4.27c.67-.93.49-1.519.32-1.79z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-function SunIcon(props: any) {
-  return (
-    <svg
-      aria-hidden="true"
-      focusable="false"
-      height="1em"
-      role="presentation"
-      viewBox="0 0 24 24"
-      width="1em"
-      {...props}
-    >
-      <g fill="currentColor">
-        <path d="M19 12a7 7 0 11-7-7 7 7 0 017 7z" />
-        <path d="M12 22.96a.969.969 0 01-1-.96v-.08a1 1 0 012 0 1.038 1.038 0 01-1 1.04zm7.14-2.82a1.024 1.024 0 01-.71-.29l-.13-.13a1 1 0 011.41-1.41l.13.13a1 1 0 010 1.41.984.984 0 01-.7.29zm-14.28 0a1.024 1.024 0 01-.71-.29 1 1 0 010-1.41l.13-.13a1 1 0 011.41 1.41l-.13.13a1 1 0 01-.7.29zM22 13h-.08a1 1 0 010-2 1.038 1.038 0 011.04 1 .969.969 0 01-.96 1zM2.08 13H2a1 1 0 010-2 1.038 1.038 0 011.04 1 .969.969 0 01-.96 1zm16.93-7.01a1.024 1.024 0 01-.71-.29 1 1 0 010-1.41l.13-.13a1 1 0 011.41 1.41l-.13.13a.984.984 0 01-.7.29zm-14.02 0a1.024 1.024 0 01-.71-.29l-.13-.14a1 1 0 011.41-1.41l.13.13a1 1 0 010 1.41.97.97 0 01-.7.3zM12 3.04a.969.969 0 01-1-.96V2a1 1 0 012 0 1.038 1.038 0 01-1 1.04z" />
-      </g>
-    </svg>
   );
 }

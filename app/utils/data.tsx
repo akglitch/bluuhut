@@ -1,135 +1,195 @@
-// pricingData.ts
+import React from "react";
+
+export const siteUrl = "bluehutsolutions.ca";
+
+/* ------------------------------------------------------------------ */
+/*  Services                                                           */
+/* ------------------------------------------------------------------ */
+
+export interface Service {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  capabilities: string[];
+}
+
+const iconClass = "h-6 w-6";
+
+export const serviceData: Service[] = [
+  {
+    icon: (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13l0-8Z" />
+      </svg>
+    ),
+    title: "Electrical Solutions",
+    description:
+      "Safe, code-compliant electrical engineering for homes, businesses, and industry.",
+    capabilities: [
+      "Power distribution & panel upgrades",
+      "Lighting & energy-efficiency retrofits",
+      "Code compliance & safety inspections",
+    ],
+  },
+  {
+    icon: (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20h.01" />
+        <path d="M2 8.82a15 15 0 0 1 20 0" />
+        <path d="M5 12.86a10 10 0 0 1 14 0" />
+        <path d="M8.5 16.43a5 5 0 0 1 7 0" />
+      </svg>
+    ),
+    title: "Telecom & Networks",
+    description:
+      "Modern communication infrastructure, designed and deployed end to end.",
+    capabilities: [
+      "Structured cabling & fiber",
+      "Network design & optimization",
+      "Deployment & field commissioning",
+    ],
+  },
+  {
+    icon: (
+      <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z" />
+      </svg>
+    ),
+    title: "Facility & Handyman",
+    description:
+      "Skilled upkeep and repairs that keep your property running.",
+    capabilities: [
+      "Preventative maintenance plans",
+      "Installations & fittings",
+      "Repairs & finishing work",
+    ],
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Industries served                                                  */
+/* ------------------------------------------------------------------ */
+
+export const industries = [
+  { name: "Residential", desc: "Homes & multi-unit dwellings" },
+  { name: "Commercial", desc: "Offices, retail & hospitality" },
+  { name: "Industrial", desc: "Plants & manufacturing" },
+  { name: "Telecom", desc: "Carriers & service providers" },
+  { name: "Government", desc: "Public sector & utilities" },
+  { name: "Enterprise", desc: "Campuses & data facilities" },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Why BlueHut — value propositions                                   */
+/* ------------------------------------------------------------------ */
+
+export const valueProps = [
+  {
+    title: "Licensed & insured",
+    desc: "Certified technicians and full coverage on every job.",
+  },
+  {
+    title: "Engineered to standard",
+    desc: "Work to code, quality-checked at every stage.",
+  },
+  {
+    title: "Rapid response",
+    desc: "24/7 emergency support and dependable scheduling.",
+  },
+  {
+    title: "Transparent pricing",
+    desc: "Clear, upfront quotes, no surprises.",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Delivery process                                                   */
+/* ------------------------------------------------------------------ */
+
+export const processSteps = [
+  {
+    step: "01",
+    title: "Consult & assess",
+    desc: "We inspect the site and define scope together.",
+  },
+  {
+    step: "02",
+    title: "Design & quote",
+    desc: "A clear plan with upfront pricing and a timeline.",
+  },
+  {
+    step: "03",
+    title: "Build & deploy",
+    desc: "Certified techs execute to code, quality-checked.",
+  },
+  {
+    step: "04",
+    title: "Support & maintain",
+    desc: "Ongoing upkeep and 24/7 response keep you running.",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Pricing                                                            */
+/* ------------------------------------------------------------------ */
 
 export interface PricingPlan {
   title: string;
   price: string;
+  period?: string;
+  description: string;
   features: string[];
+  featured?: boolean;
+  cta: string;
 }
-
-export const siteUrl = "bluehutsolutions.ca"
 
 export const pricingData: PricingPlan[] = [
   {
     title: "Basic",
-    price: "$50/month",
+    price: "CAD $65",
+    period: "/month",
+    description: "Essential cover for small homes.",
     features: [
-      " two minor repairs/maintenance tasks per month ",
-      "Discounted rates for extra services beyond the the plan",
-     
+      "Two minor repairs / maintenance tasks per month",
+      "Discounted rates on additional services",
+      "Priority scheduling",
     ],
+    cta: "Get started",
   },
   {
     title: "Standard",
-    price: "$100/month",
+    price: "CAD $115",
+    period: "/month",
+    description: "Balanced cover for busy households and small offices.",
     features: [
-      "Four minor repairs/maintenance tasks or one major task per month",
-      "Further discounted rates for additional services",
-  
-     
+      "Four minor tasks or one major task per month",
+      "Further discounted rates on extra work",
+      "Priority scheduling & reporting",
     ],
+    featured: true,
+    cta: "Choose Standard",
   },
   {
     title: "Premium",
-    price: "$200/month",
+    price: "CAD $215",
+    period: "/month",
+    description: "Comprehensive cover for demanding properties.",
     features: [
-      "Unlimited minor repairs, two major tasks per month",
-      "Lowest rates for any services not covered under the plan",
+      "Unlimited minor repairs + two major tasks / month",
+      "Lowest rates on out-of-plan services",
+      "Dedicated account contact",
     ],
+    cta: "Choose Premium",
   },
   {
-    title: "Custom",
-    price: "",
+    title: "Custom & Enterprise",
+    price: "Let's talk",
+    description: "Tailored programs for businesses and multi-site portfolios.",
     features: [
-      "Tailored for businesses or high-demand clients",
-      "Pricing and services customized based on specific needs and frequency of use",
-
+      "Scoped to your frequency and SLAs",
+      "Emergency services & annual inspections",
+      "Seasonal maintenance packages",
     ],
-  },
-  {
-    title: "Emergency Services",
-    price: "",
-    features: [
-      "Tailored for businesses or high-demand clients",
-      "Pricing and services customized based on specific needs and frequency of use",
-
-    ],
-  },
-  {
-    title: "Value-Added Services",
-    price: "",
-    features: [
-      "Emergency Services",
-      "Annual Inspections",
-      "Seasonal Maintenance Packages",
-
-    ],
+    cta: "Contact sales",
   },
 ];
-
-
-export const serviceData = [
-  {
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"
-        />
-      </svg>
-    ),
-    title: "Electrical Solutions:",
-    description:
-      " we provide a wide array of electrical solutions tailored to meet the diverse needs of our clients. Whether you're looking to enhance the energy efficiency of your home, ensure the safety and reliability of your commercial building's electrical system, or require specialized electrical services for large enterprises, our expert team is here to deliver exceptional results. Explore our service offerings and pricing plans designed to suit various requirements.",
-  },
-  {
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"
-        />
-      </svg>
-    ),
-    title: "Telecom Solutions:",
-    description:
-      "Our telecom  services cover a wide range of specialties, including network design, optimization, and deployment. Whether youre a telecommunications provider, a corporate enterprise, or a government agency, our telecom experts can help you navigate the complexities of modern communication infrastructure to ensure seamless connectivity and reliable performance.",
-  },
-  {
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-        />
-      </svg>
-    ),
-    title: "Handyman Services:",
-    description:
-      "In addition to our specialized  offerings, we also provide handyman services for general maintenance and repair work. Whether its fixing leaky faucets, installing shelves, or painting walls, our skilled handymen are ready to tackle a wide range of tasks to keep your property in top condition.",
-  },
-];
-
