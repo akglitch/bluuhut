@@ -16,7 +16,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
   const deets = {
     from: "Bluehut App <postmaster@mail.bluehutsolutions.ca>",
-    to: "ydglitch@gmail.com",
+    to: "bluehutsolutions@gmail.com",
     subject: `Message from [${data.firstName} ${data.lastName}] on the BlueHut App`,
     text: `${data.message}`,
     html: `<h1>${data.message}<br></br><br></br><br></br>   From: ${data.email}</h1>`,
